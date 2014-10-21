@@ -343,16 +343,17 @@ if ($is_editor) {
             $message = "<p class='success'>$langAnnAdd</p>";
         }
      // Facebook API call
-$ownlink = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]&an_id=$id";
+$link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]&an_id=$id";
 $text = strip_tags($_POST['newContent']);
+$newtext = strip_tags($_POST['modify']);
 
 preg_match_all("/#[\w\d]+/", $text, $matches, PREG_SET_ORDER);
 unset($matches[0]);
-$matches_array = $matches[0];
-$tags = implode( ' ', array_unique( $matches_array));
+array_unique($matches_array = $matches[0]);
+$tags = implode( ' ', $matches_array);
 
 $url = 'https://graph.facebook.com/v2.1/695730993849543/feed?access_token=CAANapFfgn3QBAA1reXj15nCo4RgZB3cEViKnXe0i0dTDnjhirBYYjVTv46sPL6sVosAR1L832I5wvlc3ObX4JCaZA8hubsW1qgEz0sS1bpuuDQKLZCAmMEY8guSz0BiNqQwEbpiSauM0wqwtW299p8BBzJUkTVtPMaJJNSCct3baXAwY1gy';
-$fields = array('message' => urlencode($text),'link' => urlencode($ownlink),'tags' =>urlencode($tags));
+$fields = array('message' => urlencode($text),'link' => urlencode($link),'tags' =>urlencode($tags),'edit' => urlencode($newtext));
 //url-ify the data for the POST
 $fields_string = "";
 foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
@@ -494,3 +495,4 @@ $head_content .= "<script type='text/javascript'>$(document).ready(function () {
 });</script>
 <link href='../../js/jquery.multiselect.css' rel='stylesheet' type='text/css'>";
 draw($tool_content, 2, null, $head_content);
+
